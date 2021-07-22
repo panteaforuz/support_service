@@ -1,7 +1,7 @@
 package ir.balonet.support_service.service
 
 import ir.balonet.support_service.dao.UserRepo
-import ir.balonet.support_service.model.UserModel
+import ir.balonet.support_service.model.entity.UserModel
 import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
 import org.springframework.data.repository.findByIdOrNull
@@ -26,13 +26,13 @@ class UserService(val userRepo: UserRepo) {
     }
 
     fun addUserByUser(newUser: UserDtoUser) {
-        if (userRepo.existByNationalId(newUser.nationalId))
+        if (userRepo.existsByNationalId(newUser.nationalId))
             throw RuntimeException(" this nationalId is registered before")
         userRepo.save(UserModel.fromUser(newUser))
     }
 
     fun addUserByAdmin(newUser: UserDtoAdmin) {
-        if (userRepo.existByNationalId(newUser.nationalId))
+        if (userRepo.existsByNationalId(newUser.nationalId))
             throw RuntimeException(" this nationalId is registered before")
         userRepo.save(UserModel.fromAdmin(newUser))
     }
@@ -65,7 +65,7 @@ class UserService(val userRepo: UserRepo) {
     }
 
     fun deleteUserByNationalId(nationalId: Long) {
-        if (userRepo.existByNationalId(nationalId))
+        if (userRepo.existsByNationalId(nationalId))
             userRepo.delete(userRepo.findByNationalId(nationalId))
     }
 }

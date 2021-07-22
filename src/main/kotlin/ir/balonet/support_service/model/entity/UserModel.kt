@@ -1,11 +1,10 @@
-package ir.balonet.support_service.model
+package ir.balonet.support_service.model.entity
 import ir.balonet.support_service.model.dto.UserDtoUser
 import ir.balonet.support_service.model.dto.UserDtoAdmin
-import lombok.Data
 import javax.persistence.*
 import java.time.LocalDateTime
 
-@Data
+
 @Entity
 data class UserModel(
     @Id
@@ -29,13 +28,13 @@ data class UserModel(
     //  var isCredentialsNonExpired: Boolean = false
 ) {
     companion object {
-    fun fromUser(userDto: UserDtoUser) : UserModel{
+    fun fromUser(userDto: UserDtoUser) : UserModel {
         return UserModel(name = userDto.name,
             nationalId = userDto.nationalId,
             password = userDto.password,
             createdAt = LocalDateTime.now())
     }
-        fun fromAdmin(userDto: UserDtoAdmin) : UserModel{
+        fun fromAdmin(userDto: UserDtoAdmin) : UserModel {
             return UserModel(name = userDto.name,
                 nationalId = userDto.nationalId,
                 password = userDto.password,

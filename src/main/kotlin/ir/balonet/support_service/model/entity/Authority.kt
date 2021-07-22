@@ -1,4 +1,4 @@
-package ir.balonet.support_service.model
+package ir.balonet.support_service.model.entity
 //
 //import org.springframework.security.core.GrantedAuthority
 //

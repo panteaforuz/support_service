@@ -1,6 +1,6 @@
 package ir.balonet.support_service.controller
 
-import ir.balonet.support_service.model.UserModel
+import ir.balonet.support_service.model.entity.UserModel
 import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
 import ir.balonet.support_service.service.UserService

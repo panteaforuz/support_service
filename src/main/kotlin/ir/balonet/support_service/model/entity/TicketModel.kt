@@ -1,7 +1,6 @@
-package ir.balonet.support_service.model
+package ir.balonet.support_service.model.entity
 
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 
@@ -15,7 +14,7 @@ data class TicketModel(
     @ManyToOne
     var user: UserModel,
     var createdAt: LocalDateTime,
-    var status: TicketStatus=TicketStatus.Unseen
+    var status: TicketStatus = TicketStatus.Unseen
 )
 enum class TicketStatus {
     Unseen, Rejected, Answered
