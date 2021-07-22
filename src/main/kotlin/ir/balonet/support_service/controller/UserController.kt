@@ -4,6 +4,7 @@ import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
 import ir.balonet.support_service.model.entity.User
 import ir.balonet.support_service.service.UserService
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.*
 
 @RequestMapping
@@ -30,24 +31,24 @@ class UserController(var userService: UserService) {
         return userService.getUserByNationalId(nationalId)
     }
 
-    @PostMapping("register/byUser") // available for user
+    @PostMapping("register/byUser" ,consumes = [APPLICATION_JSON_VALUE]) // available for user
     fun addUser(@RequestBody newUser: UserDtoUser) {
         userService.addUserByUser(newUser)
     }
 
-    @PostMapping("register/byAdmin") // available for admin
+    @PostMapping("register/byAdmin",consumes = [APPLICATION_JSON_VALUE]) // available for admin
     fun addUser(@RequestBody newUser: UserDtoAdmin) {
         userService.addUserByAdmin(newUser)
     }
 
-    @PutMapping("/update/byUser") // available for user
-    fun updateByUser(@RequestBody newUser: UserDtoUser, @RequestParam id: Long) {
-        userService.updateByUser(newUser, id)
+    @PutMapping("/update/byUser",consumes = [APPLICATION_JSON_VALUE]) // available for user
+    fun updateByUser(@RequestBody newUser: UserDtoUser, @RequestParam id: Long):User {
+        return userService.updateByUser(newUser, id)
     }
 
-    @PutMapping("/update/byAdmin") // available for admin
-    fun updateByAdmin(@RequestBody newUser: UserDtoAdmin, @RequestParam id: Long) {
-        userService.updateByAdmin(newUser, id)
+    @PutMapping("/update/byAdmin",consumes = [APPLICATION_JSON_VALUE]) // available for admin
+    fun updateByAdmin(@RequestBody newUser: UserDtoAdmin, @RequestParam id: Long):User {
+        return userService.updateByAdmin(newUser, id)
     }
 
     @DeleteMapping("/del/ById") // available for admin
@@ -55,10 +56,6 @@ class UserController(var userService: UserService) {
         userService.deleteUserById(id)
     }
 
-    @DeleteMapping("/del/ByNationalId") // available for admin and user
-    fun deleteUserByNationalId(@RequestParam nationalId: Long) {
-        userService.deleteUserByNationalId(nationalId)
-    }
 
 }
 

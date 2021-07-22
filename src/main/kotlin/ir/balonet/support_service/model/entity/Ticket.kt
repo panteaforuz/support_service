@@ -5,12 +5,12 @@ import javax.persistence.*
 
 
 @Entity
-data class TicketModel(
+data class Ticket(
     @Id
     @GeneratedValue
-    var id: Long?=null,
+    var id: Long=0,
     var massage: String,
-    var response: String?=null,
+    var response: String="",
     @ManyToOne
     var user: User,
     var createdAt: LocalDateTime,
