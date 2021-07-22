@@ -8,5 +8,5 @@ class UserDtoAdmin(
     var name: String,
     var nationalId: Long,
     var password: String,
-    var isLocke:Boolean =false
+    var isLocked:Boolean =false
 )

@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 
 @Entity
-data class UserModel(
+data class User(
     @Id
     @GeneratedValue
     var id: Long?=null,
@@ -28,17 +28,19 @@ data class UserModel(
     //  var isCredentialsNonExpired: Boolean = false
 ) {
     companion object {
-    fun fromUser(userDto: UserDtoUser) : UserModel {
-        return UserModel(name = userDto.name,
+    fun fromUser(userDto: UserDtoUser) : User {
+        return User(name = userDto.name,
             nationalId = userDto.nationalId,
             password = userDto.password,
             createdAt = LocalDateTime.now())
     }
-        fun fromAdmin(userDto: UserDtoAdmin) : UserModel {
-            return UserModel(name = userDto.name,
+        fun fromAdmin(userDto: UserDtoAdmin) : User {
+            return User(name = userDto.name,
                 nationalId = userDto.nationalId,
                 password = userDto.password,
-                createdAt = LocalDateTime.now())
+                createdAt = LocalDateTime.now(),
+                isLocked = userDto.isLocked
+            )
         }
 }
 }

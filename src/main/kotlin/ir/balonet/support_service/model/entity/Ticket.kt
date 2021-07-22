@@ -8,14 +8,14 @@ import javax.persistence.*
 data class TicketModel(
     @Id
     @GeneratedValue
-    var id: Long,
-    var Massage: String,
-    var response: String,
+    var id: Long?=null,
+    var massage: String,
+    var response: String?=null,
     @ManyToOne
-    var user: UserModel,
+    var user: User,
     var createdAt: LocalDateTime,
-    var status: TicketStatus = TicketStatus.Unseen
+    var status: TicketStatus = TicketStatus.UNSEEN
 )
 enum class TicketStatus {
-    Unseen, Rejected, Answered
+    UNSEEN,VIEWED, REJECTED, ANSWERED
 }

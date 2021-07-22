@@ -1,8 +1,8 @@
 package ir.balonet.support_service.controller
 
-import ir.balonet.support_service.model.entity.UserModel
 import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
+import ir.balonet.support_service.model.entity.User
 import ir.balonet.support_service.service.UserService
 import org.springframework.web.bind.annotation.*
 
@@ -11,22 +11,22 @@ import org.springframework.web.bind.annotation.*
 class UserController(var userService: UserService) {
 
     @GetMapping("/all") // available for admin
-    fun getAllUser(): List<UserModel> {
+    fun getAllUser(): List<User> {
         return userService.getAllUsers()
     }
 
     @GetMapping("/get/byId")  // available for admin and user
-    fun getUserById(@RequestParam id: Long): UserModel {
+    fun getUserById(@RequestParam id: Long): User {
         return userService.getUserById(id)
     }
 
     @GetMapping("/get/byName")
-    fun getUsersByNameContaining(@RequestParam name: String): List<UserModel> {  // available for admin
+    fun getUsersByNameContaining(@RequestParam name: String): List<User> {  // available for admin
         return userService.getByNameContaining(name)
     }
 
     @GetMapping("/get/byNationalId")// available for admin and user
-    fun getUserByNationalId(@RequestParam nationalId: Long): UserModel {
+    fun getUserByNationalId(@RequestParam nationalId: Long): User {
         return userService.getUserByNationalId(nationalId)
     }
 
@@ -50,7 +50,7 @@ class UserController(var userService: UserService) {
         userService.updateByAdmin(newUser, id)
     }
 
-    @DeleteMapping("/del/ById") // available for admin and user
+    @DeleteMapping("/del/ById") // available for admin
     fun deleteUserById(@RequestParam id: Long) {
         userService.deleteUserById(id)
     }
@@ -60,7 +60,5 @@ class UserController(var userService: UserService) {
         userService.deleteUserByNationalId(nationalId)
     }
 
-
-    /// TODO   دیدن تیکت های یوزر توسط  خودش یا ادمین نیازه؟
 }
 
