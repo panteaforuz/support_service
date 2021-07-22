@@ -18,7 +18,7 @@ class UserService(val userRepo: UserRepo) {
 
     fun getUserById(id: Long): User {
         return userRepo.findByIdOrNull(id) ?: throw NotFoundException("there is no user by $id id")
-        //TODO exception should change and handle
+
     }
 
     fun getByNameContaining(name: String): List<User> {
@@ -34,14 +34,12 @@ class UserService(val userRepo: UserRepo) {
     fun addUserByUser(newUser: UserDtoUser) {
         if (userRepo.existsByNationalId(newUser.nationalId))
             throw AlreadyExistException(" this nationalId is registered before")
-        //TODO exception should change and handle
         userRepo.save(User.fromUser(newUser))
     }
 
     fun addUserByAdmin(newUser: UserDtoAdmin) {
         if (userRepo.existsByNationalId(newUser.nationalId))
             throw AlreadyExistException(" this nationalId is registered before")
-        //TODO exception should change and handle
         userRepo.save(User.fromAdmin(newUser))
     }
 
@@ -56,7 +54,7 @@ class UserService(val userRepo: UserRepo) {
             userRepo.save(exUser)
             return exUser
         } else throw NotFoundException("there is no user by $id id")//
-        //TODO exception should change and handle
+
 
     }
 
@@ -71,7 +69,7 @@ class UserService(val userRepo: UserRepo) {
             userRepo.save(exUser)
             return exUser
         } else throw NotFoundException("there is no user by $id id")
-        //TODO exception should change and handle
+
     }
 
     fun deleteUserById(id: Long) {
@@ -79,7 +77,7 @@ class UserService(val userRepo: UserRepo) {
             userRepo.deleteById(id)
         else
             throw NotFoundException("there is no user by $id id")
-        //TODO exception should change and handle
+
     }
 
 }

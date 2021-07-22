@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
 
-class NotFoundException(massage: String) : RuntimeException(massage)
+class NotFoundException(massage: String) : Exception(massage)
 
 
 @ControllerAdvice

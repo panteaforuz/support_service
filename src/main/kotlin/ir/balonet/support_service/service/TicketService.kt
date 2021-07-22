@@ -2,21 +2,24 @@ package ir.balonet.support_service.service
 
 import ir.balonet.support_service.dao.TicketRepo
 import ir.balonet.support_service.dao.UserRepo
+import ir.balonet.support_service.exception.NotFoundException
 import ir.balonet.support_service.model.entity.Ticket
 import ir.balonet.support_service.model.entity.TicketStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
-    /*fun addTicket(massage: String) {
-        ticketRepo.save(
-            Ticket(
-                massage = massage,
-                createdAt = LocalDateTime.now(),
-                user =
-                //TODO set user gets by token))
-
-    }*/
+    fun addTicket(userId: Long, msg: String) {
+        if (userRepo.existsById(userId)) {
+            val newTicket: Ticket? = null
+            newTicket?.apply {
+                massage = msg
+                user = userRepo.getById(userId)
+                createdAt = LocalDateTime.now()
+            }
+        } else throw NotFoundException("user by $userId id not found")
+    }
 
     fun getAllTickets(): List<Ticket> {
         return ticketRepo.findAll()
@@ -26,14 +29,14 @@ class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
     fun getTicketById(id: Long): Ticket {
         if (ticketRepo.existsById(id))
             return ticketRepo.getById(id)
-        else throw RuntimeException("ticket by this id not found")
+        else throw NotFoundException("ticket by id:$id  not found")
     }
 
     fun getUsersTickets(userId: Long): MutableList<Ticket>? {
         if (userRepo.existsById(userId)) {
             val user = userRepo.getById(userId)
             return user.tickets
-        } else throw RuntimeException("user by this id not found")
+        } else throw NotFoundException("user by id:$userId  not found")
         ///TODO if role is admin or medator,change the tickets status to viewed
     }
 
@@ -58,9 +61,9 @@ class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
                 exTicket.status = TicketStatus.UNSEEN
                 ticketRepo.save(exTicket)
                 return exTicket
-            } else throw RuntimeException("ticket has been rejected")
+            } else throw RuntimeException("ticket has been rejected")/////////////////////TODO consider a new exception for this
         } else
-            throw RuntimeException("ticket by this id not found")
+            throw NotFoundException("ticket by id:$ticketId  not found")
     }
 
     fun updateTicketByAdminAndMed(ticketId: Long, response: String, status: TicketStatus): Ticket {
@@ -71,16 +74,16 @@ class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
             ticketRepo.save(exTicket)
             return exTicket
         } else
-            throw RuntimeException("ticket by this id not found")
+            throw NotFoundException("ticket by id:$ticketId not found")
 
     }
 
-    fun deleteTicketById(ticketId: Long){
+    fun deleteTicketById(ticketId: Long) {
         //TODO check if the ticketId belongs to user requested
         if (ticketRepo.existsById(ticketId))
             ticketRepo.deleteById(ticketId)
         else
-            throw RuntimeException("ticket by this id not found")
+            throw RuntimeException("ticket by id:$ticketId not found")
     }
 }
 

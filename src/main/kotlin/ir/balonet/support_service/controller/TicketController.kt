@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/ticket")
 class TicketController(var ticketService: TicketService) {
 
-    /*  @PostMapping("/postByUser") //available only for user
-      fun addTicket(massage: String) {
-          ///need to change :add ticket to user
+      @PostMapping("/postByUser") //available only for user
+      fun addTicket(userId:Long,massage: String) {
+          ticketService.addTicket(userId,massage)
           // TODO check if user is locked cant create or update ticket
-          ticketService.addTicket(massage)
-      }*/
+      }
 
     @GetMapping("/all")
     fun getAllTickets(): List<Ticket> { //available admin and mediator

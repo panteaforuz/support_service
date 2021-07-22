@@ -7,8 +7,8 @@ import ir.balonet.support_service.service.UserService
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping
-@RestController("/api/user")
+@RequestMapping("/api/user")
+@RestController
 class UserController(var userService: UserService) {
 
     @GetMapping("/all") // available for admin

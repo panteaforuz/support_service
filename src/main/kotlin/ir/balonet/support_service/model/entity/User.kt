@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.OneToMany
 
-
 @Entity
 data class User(
     @Id
@@ -17,10 +16,10 @@ data class User(
     var name: String,
     var nationalId: Long,
     var password: String,
-    @OneToMany //mappedBy??
+    @OneToMany (mappedBy="user",orphanRemoval = true)
     var tickets: MutableList<Ticket>? = mutableListOf(),
     var isLocked: Boolean = false,
-    var createdAt: LocalDateTime,
+    var registeredAt: LocalDateTime,
 ) {
     companion object {
         fun fromUser(userDto: UserDtoUser): User {
@@ -28,7 +27,7 @@ data class User(
                 name = userDto.name,
                 nationalId = userDto.nationalId,
                 password = userDto.password,
-                createdAt = LocalDateTime.now()
+                registeredAt = LocalDateTime.now()
             )
         }
 
@@ -37,7 +36,7 @@ data class User(
                 name = userDto.name,
                 nationalId = userDto.nationalId,
                 password = userDto.password,
-                createdAt = LocalDateTime.now(),
+                registeredAt = LocalDateTime.now(),
                 isLocked = userDto.isLocked
             )
         }
