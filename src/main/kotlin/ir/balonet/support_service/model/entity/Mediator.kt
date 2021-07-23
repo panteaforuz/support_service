@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class Mediator(
+data class Mediator(
     @Id
     @GeneratedValue
     var id: Long = 0,

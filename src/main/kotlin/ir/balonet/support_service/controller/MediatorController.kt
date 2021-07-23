@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class MediatorController(val mediatorService: MediatorService) {
 
-    @PostMapping("/register/byMedId", consumes = [MediaType.APPLICATION_JSON_VALUE]) // available for admin
+    @PostMapping("/register", consumes = [MediaType.APPLICATION_JSON_VALUE]) // only available for admin
     fun addMedBy(@RequestBody mediatorDto: MediatorDto): Mediator {
         return mediatorService.addMed(mediatorDto)
     }

@@ -52,7 +52,7 @@ class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
         //TODO check if the ticket belongs to user requested
         if (ticketRepo.existsById(ticketId)) {
             val exTicket = ticketRepo.getById(ticketId)
-            if (exTicket.status == TicketStatus.REJECTED) {
+            if (exTicket.status != TicketStatus.REJECTED) {
                 exTicket.massage = massage
                 exTicket.status = TicketStatus.UNSEEN
                 return ticketRepo.save(exTicket)

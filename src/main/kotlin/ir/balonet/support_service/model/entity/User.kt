@@ -1,7 +1,9 @@
 package ir.balonet.support_service.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
+import lombok.ToString
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -12,10 +14,12 @@ data class User(
     var id: Long = 0,
     var name: String,
     var nationalId: Long,
+    @JsonIgnore
     var password: String,
-    @OneToMany (mappedBy="user",orphanRemoval = true ,fetch = FetchType.LAZY)
+    @OneToMany (mappedBy="user",orphanRemoval = true )
+    @JsonIgnore
     var tickets: MutableList<Ticket>? = mutableListOf(),
-    var isLocked: Boolean = false,
+    var isLocked: Boolean= false,
     var registeredAt: LocalDateTime,
 ) {
     companion object {

@@ -13,22 +13,20 @@ import org.springframework.stereotype.Service
 class UserService(val userRepo: UserRepo) {
     fun getAllUsers(): MutableList<User> {
         return userRepo.findAll()
-        ///TODO List can be empty, handle it
     }
 
     fun getUserById(id: Long): User {
         return userRepo.findByIdOrNull(id) ?: throw NotFoundException("there is no user by $id id")
-
     }
 
     fun getByNameContaining(name: String): List<User> {
         return userRepo.findByNameContaining(name)
-        ///TODO List can be empty, handle it
     }
 
     fun getUserByNationalId(nationalId: Long): User {
-        return getUserByNationalId(nationalId)
-        ///TODO User can be null, handle it
+        if (userRepo.existsByNationalId(nationalId))
+            return getUserByNationalId(nationalId)
+        else throw NotFoundException("user by nationalId:$nationalId not found")
     }
 
     fun addUserByUser(newUser: UserDtoUser) {
@@ -66,8 +64,7 @@ class UserService(val userRepo: UserRepo) {
                 nationalId = updatedUser.nationalId
                 isLocked = updatedUser.isLocked
             }
-            userRepo.save(exUser)
-            return exUser
+            return userRepo.save(exUser)
         } else throw NotFoundException("there is no user by $id id")
 
     }
