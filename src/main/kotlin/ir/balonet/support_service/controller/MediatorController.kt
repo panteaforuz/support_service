@@ -6,27 +6,39 @@ import ir.balonet.support_service.service.MediatorService
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/api/mediator")
+@RequestMapping("/mediator")
 @RestController
 class MediatorController(val mediatorService: MediatorService) {
 
-    @PostMapping("/register", consumes = [MediaType.APPLICATION_JSON_VALUE]) // only available for admin
-    fun addMedBy(@RequestBody mediatorDto: MediatorDto): Mediator {
-        return mediatorService.addMed(mediatorDto)
+    @PostMapping("/register", consumes = [MediaType.APPLICATION_JSON_VALUE]) // only accessible for admin
+    fun addMedBy(@RequestParam token:String ,@RequestBody mediatorDto: MediatorDto) {
+         mediatorService.addMed(token,mediatorDto)
     }
 
-    @DeleteMapping("/delete/byMedId")
-    fun deleteMedById(@RequestParam medId: Long) { // available for admin
-        mediatorService.deleteMedById(medId)
+    @DeleteMapping("/delete/byMedId")// accessible for admin
+    fun deleteMedById(@RequestParam token:String ,@RequestParam medId: Long) {
+        mediatorService.deleteMedById(token,medId)
     }
 
-    @PutMapping("/update/byMedId", consumes = [MediaType.APPLICATION_JSON_VALUE]) // available for admin and mediator
-    fun updateMedById(@RequestParam medId: Long,@RequestBody mediatorDto: MediatorDto): Mediator {
-        return mediatorService.updateMedById(medId, mediatorDto)
+    @PutMapping("/update/byMedId/byAdmin", consumes = [MediaType.APPLICATION_JSON_VALUE]) // accessible for admin
+    fun updateMedById(@RequestParam token:String ,@RequestBody medId:Long,@RequestBody mediatorDto: MediatorDto): Mediator {
+        return mediatorService.updateMedById(token,medId, mediatorDto)
+    }
+    @PutMapping("/update/byToken", consumes = [MediaType.APPLICATION_JSON_VALUE]) // accessible for mediator
+    fun updateMedByToken(@RequestParam token:String ,@RequestBody mediatorDto: MediatorDto): Mediator {
+        return mediatorService.updateMedByToken(token, mediatorDto)
     }
 
-    @GetMapping("/get/byMedId")// available for admin and mediator
-    fun getMedById(@RequestParam medId: Long): Mediator {
-        return mediatorService.getMedById(medId)
+    @GetMapping("/get/byMedToken")// accessible for mediator
+    fun getMedByToken(@RequestParam token:String ): Mediator {
+        return mediatorService.getMedByToken(token)
+    }
+    @GetMapping("/get/byAdmin/byMedId")// accessible for admin
+    fun getMedById(@RequestParam token:String ,@RequestParam medId: Long): Mediator {
+        return mediatorService.getMedById(token,medId)
+    }
+    @PostMapping("/login")
+    fun mediatorLogin(@RequestParam nationalId: Long, @RequestParam password: String): String {
+        return mediatorService.login(nationalId, password)
     }
 }

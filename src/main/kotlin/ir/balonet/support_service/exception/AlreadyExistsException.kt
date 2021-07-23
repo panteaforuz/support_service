@@ -18,11 +18,3 @@ class AlreadyExistException(massage: String?) : Exception(massage)
         return ResponseEntity(apiError, HttpStatus.CONFLICT)
     }
 }
-/*class NotFoundHandler : ResponseEntityExceptionHandler() {
-    @ExceptionHandler(value = [(NotFoundException::class)])
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun NotFoundHandling(exception: NotFoundException): ResponseEntity<ApiError> {
-        val apiError = ApiError(HttpStatus.NOT_FOUND, exception.message)
-        return ResponseEntity<ApiError>(apiError, HttpStatus.NOT_FOUND)
-    }
-}*/

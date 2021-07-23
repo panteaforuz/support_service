@@ -6,59 +6,61 @@ import ir.balonet.support_service.service.TicketService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/ticket")
+@RequestMapping("/ticket")
 class TicketController(var ticketService: TicketService) {
 
-      @PostMapping("/postByUser") //available only for user
-      fun addTicket(@RequestParam userId:Long,@RequestParam massage: String) {
-          ticketService.addTicket(userId,massage)
-          // TODO check if user is locked cant create or update ticket
+      @PostMapping("/postByUser")   //accessible only for user
+      fun addTicket(@RequestParam token:String,@RequestParam massage: String) {
+          ticketService.addTicket(token,massage)
       }
 
-    @GetMapping("/all")
-    fun getAllTickets(): List<Ticket> { //available admin and mediator
-        return ticketService.getAllTickets()
+    @GetMapping("/all")  //accessible admin and mediator
+    fun getAllTickets(@RequestParam token:String): List<Ticket> {
+        return ticketService.getAllTickets(token)
     }
 
-    @GetMapping("/getById")  //available for admin and mediator
-    fun getTicketById(@RequestParam id: Long): Ticket {
-        return ticketService.getTicketById(id)
-        //TODO if role is admin or mediator change the ticket status to VIEWED
+    @GetMapping("/getById")  //accessible for admin and mediator
+    fun getTicketById(@RequestParam token:String,@RequestParam id: Long): Ticket {
+        return ticketService.getTicketById(token,id)
+
     }
 
-    @GetMapping("/getUsersTickets")  //available for all
-    fun getUsersTickets(@RequestParam UserId: Long): List<Ticket>? {
-        return ticketService.getUsersTickets(UserId)
-        //TODO if role is admin or mediator change the ticket status to VIEWED
+    @GetMapping("/getUsersTickets")  //accessible for user
+    fun userGetTicketsByToken(@RequestParam token:String): List<Ticket>? {
+        return ticketService.getUsersTicketsByToken(token)
+    }
+    @GetMapping("/getUsersTickets/byAdmin&Med")  //accessible for admin and mediator
+    fun adminAndMedGetTicketsByUserId(@RequestParam token:String,@RequestParam UserId: Long): List<Ticket>? {
+        return ticketService.getUsersTicketsById(token,UserId)
     }
 
     @GetMapping("/getUnSeen/ByAdmin&Med")
-    fun getUnSeenTickets(): List<Ticket> {
-        return ticketService.getUnSeenTickets()
+    fun getUnSeenTickets(@RequestParam token:String): List<Ticket> {
+        return ticketService.getUnSeenTickets(token)
     }
 
     @GetMapping("/getRejected/ByAdmin&Med")
-    fun getRejectedTickets(): List<Ticket> {
-        return ticketService.getRejectedTickets()
+    fun getRejectedTickets(@RequestParam token:String): List<Ticket> {
+        return ticketService.getRejectedTickets(token)
     }
 
-    @PutMapping("/update/ByUser") //available only for user
-    // TODO check if user is locked cant create or update ticket
-    fun updateTicketByUser(@RequestParam ticketId: Long, @RequestParam massage: String) {
-        ticketService.updateTicketByUser(ticketId, massage)
+    @PutMapping("/update/ByUser") //accessible only for user
+    fun updateTicketByUser(@RequestParam token:String,@RequestParam ticketId: Long, @RequestParam massage: String) {
+        ticketService.updateTicketByUser(token,ticketId, massage)
     }
 
-    @PutMapping("/update/ByAdmin&Med") //available for user and admin and mediator
+    @PutMapping("/update/ByAdmin&Med") //accessible for user and admin and mediator
     fun updateTicketByAdminAndMed(
+        @RequestParam token:String,
         @RequestParam id: Long,
         @RequestParam response: String,
         @RequestParam status: TicketStatus
     ) {
-        ticketService.updateTicketByAdminAndMed(id, response, status)
+        ticketService.updateTicketByAdminAndMed(token ,id, response, status)
     }
-    @DeleteMapping("/delete/byUserId")
-    fun deleteTicketById(@RequestParam ticketId: Long){
-        ticketService.deleteTicketById(ticketId)
+    @DeleteMapping("/delete/byUser")
+    fun deleteTicketByUserToken(@RequestParam token:String,@RequestParam ticketId: Long){
+        ticketService.deleteTicketById(token,ticketId)
     }
 
 }

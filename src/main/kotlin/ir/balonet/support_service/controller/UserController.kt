@@ -7,55 +7,65 @@ import ir.balonet.support_service.service.UserService
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.web.bind.annotation.*
 
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 @RestController
 class UserController(var userService: UserService) {
 
-    @GetMapping("/all") // available for admin
-    fun getAllUser(): List<User> {
-        return userService.getAllUsers()
+    @GetMapping("/adminGet/all") // accessible for admin
+    fun getAllUser(@RequestParam token: String): List<User> {
+        return userService.getAllUsers(token)
     }
 
-    @GetMapping("/get/byId")  // available for admin and user
-    fun getUserById(@RequestParam id: Long): User {
-        return userService.getUserById(id)
+    @GetMapping("/getById/byAdmin")  // accessible for admin
+    fun adminGetUserById(@RequestParam token: String, @RequestParam userId: Long): User {
+        return userService.getUserById(token, userId)
     }
 
-    @GetMapping("/get/byName")
-    fun getUsersByNameContaining(@RequestParam name: String): List<User> {  // available for admin
-        return userService.getByNameContaining(name)
+    @GetMapping("/get/ByToken")  // user Get his account by token
+    fun userGetUserByToken(@RequestParam token: String): User {
+        return userService.getUserByToken(token)
     }
 
-    @GetMapping("/get/byNationalId")// available for admin and user
-    fun getUserByNationalId(@RequestParam nationalId: Long): User {
-        return userService.getUserByNationalId(nationalId)
+    @GetMapping("/getByName/byAdmin")    // accessible for admin
+    fun getUsersByNameContaining(
+        @RequestParam token: String,
+        @RequestParam name: String
+    ): List<User> {
+        return userService.getByNameContaining(token, name)
     }
 
-    @PostMapping("register/byUser" ,consumes = [APPLICATION_JSON_VALUE]) // available for user
+    @PostMapping("/register", consumes = [APPLICATION_JSON_VALUE]) // accessible for user
     fun addUser(@RequestBody newUser: UserDtoUser) {
         userService.addUserByUser(newUser)
     }
 
-    @PostMapping("register/byAdmin",consumes = [APPLICATION_JSON_VALUE]) // available for admin
-    fun addUser(@RequestBody newUser: UserDtoAdmin) {
-        userService.addUserByAdmin(newUser)
+    @PostMapping("/register/byAdmin", consumes = [APPLICATION_JSON_VALUE]) // accessible for admin
+    fun addUserByAdmin(@RequestParam token: String, @RequestBody newUser: UserDtoAdmin) {
+        userService.addUserByAdmin(token, newUser)
     }
 
-    @PutMapping("/update/byUser",consumes = [APPLICATION_JSON_VALUE]) // available for user
-    fun updateByUser(@RequestBody newUser: UserDtoUser, @RequestParam id: Long):User {
-        return userService.updateByUser(newUser, id)
+    @PutMapping("/update/byUser", consumes = [APPLICATION_JSON_VALUE]) // accessible for user
+    fun updateByUser(@RequestParam token: String, @RequestBody newUser: UserDtoUser): User {
+        return userService.updateByUser(token, newUser)
     }
 
-    @PutMapping("/update/byAdmin",consumes = [APPLICATION_JSON_VALUE]) // available for admin
-    fun updateByAdmin(@RequestBody newUser: UserDtoAdmin, @RequestParam id: Long):User {
-        return userService.updateByAdmin(newUser, id)
+    @PutMapping("/Update/byAdmin", consumes = [APPLICATION_JSON_VALUE]) // accessible for admin
+    fun updateUserByAdmin(
+        @RequestParam token: String,
+        @RequestBody newUser: UserDtoAdmin,
+        @RequestParam id: Long
+    ): User {
+        return userService.updateByAdmin(token, newUser, id)/////done
     }
 
-    @DeleteMapping("/del/ById") // available for admin
-    fun deleteUserById(@RequestParam id: Long) {
-        userService.deleteUserById(id)
+    @DeleteMapping("/Del/ById/byAdmin") // accessible for admin
+    fun adminDeleteUserById(@RequestParam token: String, @RequestParam id: Long) {
+        userService.deleteUserById(token, id)
     }
 
-
+    @PostMapping("/login")
+    fun userLogin(@RequestParam nationalId: Long, @RequestParam password: String): String {
+        return userService.login(nationalId, password)
+    }
 }
 

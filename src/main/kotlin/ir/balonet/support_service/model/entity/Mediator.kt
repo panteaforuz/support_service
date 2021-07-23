@@ -1,5 +1,6 @@
 package ir.balonet.support_service.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import ir.balonet.support_service.model.dto.MediatorDto
 import java.time.LocalDateTime
 import javax.persistence.Entity
@@ -14,6 +15,8 @@ data class Mediator(
     var name: String,
     var nationalId: Long,
     var password: String,
+    @JsonIgnore
+    var token: String="-1",
     var registeredAt: LocalDateTime,
 ) {
     companion object {

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component
 @Component
 class ConsoleView(val adminController: AdminController ) :CommandLineRunner{
     override fun run(vararg args: String?) {
-        adminController.addAdminById("pantea","1234" ,127311)
+        adminController.addAdmin("pantea","1234" ,127311)
     }
 }

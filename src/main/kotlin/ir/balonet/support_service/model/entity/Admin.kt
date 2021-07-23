@@ -12,6 +12,8 @@ data class Admin(
     @GeneratedValue
     var id: Long = 0,
     var name: String,
+    @JsonIgnore
+    var token: String="-1",
     var nationalId: Long,
     @JsonIgnore
     var password: String,

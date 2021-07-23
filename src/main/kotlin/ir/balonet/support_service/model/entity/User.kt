@@ -16,9 +16,11 @@ data class User(
     var nationalId: Long,
     @JsonIgnore
     var password: String,
+    @JsonIgnore
+    var token: String="-1",
     @OneToMany (mappedBy="user",orphanRemoval = true )
     @JsonIgnore
-    var tickets: MutableList<Ticket>? = mutableListOf(),
+    var tickets: MutableList<Ticket> = mutableListOf(),
     var isLocked: Boolean= false,
     var registeredAt: LocalDateTime,
 ) {
