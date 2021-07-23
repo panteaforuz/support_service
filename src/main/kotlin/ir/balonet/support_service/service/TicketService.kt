@@ -12,16 +12,12 @@ import java.time.LocalDateTime
 class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
     fun addTicket(userId: Long, msg: String) {
         if (userRepo.existsById(userId)) {
-            val newTicket: Ticket? = null
-            newTicket?.apply {
-                massage = msg
-                user = userRepo.getById(userId)
-                createdAt = LocalDateTime.now()
-            }
+            val newTicket = Ticket(massage = msg, user = userRepo.getById(userId), createdAt = LocalDateTime.now())
+            ticketRepo.save(newTicket)
         } else throw NotFoundException("user by $userId id not found")
     }
 
-    fun getAllTickets(): List<Ticket> {
+    fun getAllTickets():MutableList<Ticket> {
         return ticketRepo.findAll()
         ///TODO tickets can be empty, handle it
     }
@@ -59,8 +55,7 @@ class TicketService(val ticketRepo: TicketRepo, val userRepo: UserRepo) {
             if (exTicket.status == TicketStatus.REJECTED) {
                 exTicket.massage = massage
                 exTicket.status = TicketStatus.UNSEEN
-                ticketRepo.save(exTicket)
-                return exTicket
+                return ticketRepo.save(exTicket)
             } else throw RuntimeException("ticket has been rejected")/////////////////////TODO consider a new exception for this
         } else
             throw NotFoundException("ticket by id:$ticketId  not found")

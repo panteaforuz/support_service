@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class TicketController(var ticketService: TicketService) {
 
       @PostMapping("/postByUser") //available only for user
-      fun addTicket(userId:Long,massage: String) {
+      fun addTicket(@RequestParam userId:Long,@RequestParam massage: String) {
           ticketService.addTicket(userId,massage)
           // TODO check if user is locked cant create or update ticket
       }
@@ -57,7 +57,7 @@ class TicketController(var ticketService: TicketService) {
         ticketService.updateTicketByAdminAndMed(id, response, status)
     }
     @DeleteMapping("/delete/byUserId")
-    fun deleteTicketById(ticketId: Long){
+    fun deleteTicketById(@RequestParam ticketId: Long){
         ticketService.deleteTicketById(ticketId)
     }
 

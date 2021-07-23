@@ -3,10 +3,7 @@ package ir.balonet.support_service.model.entity
 import ir.balonet.support_service.model.dto.UserDtoAdmin
 import ir.balonet.support_service.model.dto.UserDtoUser
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.OneToMany
+import javax.persistence.*
 
 @Entity
 data class User(
@@ -16,7 +13,7 @@ data class User(
     var name: String,
     var nationalId: Long,
     var password: String,
-    @OneToMany (mappedBy="user",orphanRemoval = true)
+    @OneToMany (mappedBy="user",orphanRemoval = true ,fetch = FetchType.LAZY)
     var tickets: MutableList<Ticket>? = mutableListOf(),
     var isLocked: Boolean = false,
     var registeredAt: LocalDateTime,

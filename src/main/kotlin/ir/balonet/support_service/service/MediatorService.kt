@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class MediatorService(val mediatorRepo: MediatorRepo) {
-    fun addMedById(mediatorDto: MediatorDto): Mediator {
+    fun addMed(mediatorDto: MediatorDto): Mediator {
         return mediatorRepo.save(Mediator.form(mediatorDto))
     }
 
